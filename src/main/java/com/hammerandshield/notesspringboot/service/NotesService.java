@@ -34,7 +34,8 @@ public class NotesService {
 
     public NoteResponse save(CreateUpdateNoteRequest noteRequest) {
         Note savedNote = notesRepository.save(noteMapper.fromCreateRequest(noteRequest));
-        return noteMapper.toResponse(savedNote);
+        Note updatedNote = notesRepository.findById(savedNote.getId()).orElseThrow();
+        return noteMapper.toResponse(updatedNote);
     }
 
     public NoteResponse deleteById(UUID id) throws NoSuchElementException {
