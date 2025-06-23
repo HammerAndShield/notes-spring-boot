@@ -1,6 +1,6 @@
 package com.hammerandshield.notesspringboot.controller;
 
-import com.hammerandshield.notesspringboot.dto.CreateUpdateNoteRequest;
+import com.hammerandshield.notesspringboot.dto.CreateNoteRequest;
 import com.hammerandshield.notesspringboot.dto.NoteResponse;
 import com.hammerandshield.notesspringboot.service.NotesService;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +29,13 @@ public class NotesController {
     }
 
     @PostMapping
-    public NoteResponse addNote(@RequestBody CreateUpdateNoteRequest noteRequest) {
+    public NoteResponse addNote(@RequestBody CreateNoteRequest noteRequest) {
         return notesService.save(noteRequest);
     }
 
-    @PutMapping
-    public NoteResponse updateNote(@RequestBody CreateUpdateNoteRequest noteRequest) {
-        return notesService.save(noteRequest);
+    @PutMapping("/{id}")
+    public NoteResponse updateNote(@RequestBody CreateNoteRequest noteRequest, @PathVariable UUID id) {
+        return notesService.save(noteRequest, id);
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,6 @@
 package com.hammerandshield.notesspringboot.service;
 
-import com.hammerandshield.notesspringboot.dto.CreateUpdateNoteRequest;
+import com.hammerandshield.notesspringboot.dto.CreateNoteRequest;
 import com.hammerandshield.notesspringboot.dto.NoteResponse;
 import com.hammerandshield.notesspringboot.entity.Note;
 import com.hammerandshield.notesspringboot.mapper.NoteMapper;
@@ -32,10 +32,17 @@ public class NotesService {
         return noteMapper.toResponse(note);
     }
 
-    public NoteResponse save(CreateUpdateNoteRequest noteRequest) {
+    public NoteResponse save(CreateNoteRequest noteRequest) {
         Note savedNote = notesRepository.save(noteMapper.fromCreateRequest(noteRequest));
-        Note updatedNote = notesRepository.findById(savedNote.getId()).orElseThrow();
-        return noteMapper.toResponse(updatedNote);
+        return noteMapper.toResponse(savedNote);
+    }
+
+    public NoteResponse save(CreateNoteRequest noteRequest, UUID id) throws NoSuchElementException {
+        Note note = notesRepository.findById(id).orElseThrow();
+        note.setContent(noteRequest.content());
+        note.setTitle(noteRequest.title());
+        Note savedNote = notesRepository.save(note);
+        return noteMapper.toResponse(savedNote);
     }
 
     public NoteResponse deleteById(UUID id) throws NoSuchElementException {

@@ -1,6 +1,8 @@
 package com.hammerandshield.notesspringboot.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -19,10 +21,10 @@ public class Note {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
+    @CreationTimestamp
     private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false, insertable = false)
+    @UpdateTimestamp
     private Instant updatedAt;
 
     protected Note() {}
@@ -30,11 +32,6 @@ public class Note {
     public Note(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = Instant.now();
     }
 
     public UUID getId() {
